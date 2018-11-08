@@ -20,7 +20,7 @@ from hw_low_level import Servo
 from hw_low_level.gpio import GPOProviderPWM
 from hw_low_level.pwm import PWMProviderPCA9685
 from hw_railroad import Turnout
-from pca9685_driver import PCA9685
+from pca9685_driver import Device as PCA9685
 from threading import Event
 
 class TurnoutService(object):

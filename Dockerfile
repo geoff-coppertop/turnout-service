@@ -1,5 +1,7 @@
 FROM coppertopgeoff/rpi-python:3.7-101518
 
+ENV INITSYSTEM on
+
 WORKDIR /app
 
 RUN apt install -y python3-smbus
@@ -11,7 +13,9 @@ RUN pip3 install -r requirements.txt
 
 ADD ./*.py ./
 
-ENTRYPOINT [ "python3" ]
+CMD modprobe i2c-dev && python3 ./app.py -c ./config.yml
 
-CMD [ "./app.py", "-c", "config.yml" ]
+#ENTRYPOINT [ "python3" ]
+
+#MD [ "./app.py", "-c", "config.yml" ]
 

@@ -72,7 +72,7 @@ class TurnoutService(object):
         # 3) Start run loop
         while self.__is_alive:
             # Run through each of the turnouts to see if there is work to be done
-            for turnout in self.__turnouts:
+            for turnout in self.__turnouts.itervalues():
                 turnout.operate(time.time())
 
             # Wait for an event to wake us up early or process work on a regular

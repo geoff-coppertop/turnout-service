@@ -4,18 +4,19 @@ ENV INITSYSTEM on
 
 WORKDIR /app
 
-RUN apt install -y python3-smbus
-
 ADD ./requirements.txt ./requirements.txt
-ADD ./example_config.yml ./config.yml
+
+RUN apt install -y python3-smbus
 
 RUN pip3 install -r requirements.txt
 
+ADD ./example_config.yml ./config.yml
+
 ADD ./*.py ./
 
-CMD modprobe i2c-dev && python3 ./app.py -c ./config.yml
+# CMD modprobe i2c-dev && python3 ./app.py -c ./config.yml
 
-#ENTRYPOINT [ "python3" ]
+ENTRYPOINT [ "python3" ]
 
-#MD [ "./app.py", "-c", "config.yml" ]
+CMD [ "./app.py", "-c", "config.yml" ]
 

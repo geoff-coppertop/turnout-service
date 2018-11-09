@@ -28,7 +28,7 @@ class TurnoutService(object):
     Service for controlling model railroad turnouts
     TODO: A base service class can likely be extracted
     '''
-    WAIT_TIMEOUT =  0.1
+    WAIT_TIMEOUT =  0.02
     EXIT_TIMEOUT =  5.0
 
     CONFIG_FILE_YAML_READ_EXIT =    1
@@ -44,6 +44,8 @@ class TurnoutService(object):
         self.__logger = logging.getLogger(__name__)
 
         self.__is_alive = True
+
+        self.__update_rate = TurnoutService.WAIT_TIMEOUT
 
         # Turnout dictionary so that it's possible to nicely address them
         self.__turnouts = {}
@@ -71,13 +73,16 @@ class TurnoutService(object):
 
         # 3) Start run loop
         while self.__is_alive:
+            timeout = None
+
             # Run through each of the turnouts to see if there is work to be done
             for turnout in self.__turnouts.values():
-                turnout.operate(time.time())
+                if turnout.operate(time.time()):
+                    timeout = self.__update_rate
 
             # Wait for an event to wake us up early or process work on a regular
             # interval by using the timeout
-            if self.__waiter.wait(TurnoutService.WAIT_TIMEOUT):
+            if self.__waiter.wait(timeout):
                 # clear the flag so that we eventually do work again
                 self.__waiter.clear()
 
@@ -104,7 +109,7 @@ class TurnoutService(object):
 
         try:
             # 3) Process the service configuration
-            self.__configure_service(config['services'])
+            self.__configure_service(config['services']['turnout'])
         except Exception as e:
             self.__logger.error(e)
 
@@ -150,6 +155,8 @@ class TurnoutService(object):
               service will have a different configuration
         '''
         try:
+            self.__update_rate = config['update-rate']
+
             for turnout_config in config['turnouts']:
                 turnout_name = turnout_config['name']
 
@@ -196,12 +203,14 @@ class TurnoutService(object):
                     turnout_servo,
                     turnout_frog,
                     turnout_config['angles']['main'],
-                    turnout_config['angles']['diverging'])
+                    turnout_config['angles']['diverging'],
+                    config['angular-speed'])
                 turnout.state_changed += self.__transmit
 
                 self.__turnouts.update({turnout_name: turnout})
 
             # 4) communications
+            touchphat.auto_leds = False
             touchphat.on_touch(['A','B','C','D'], self.__receive)
 
         except:
@@ -214,7 +223,6 @@ class TurnoutService(object):
         '''
         Service receive handler
         '''
-
         turnout = data.name
 
         self.__logger.debug(f'RX: {turnout}')

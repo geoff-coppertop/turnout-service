@@ -20,32 +20,35 @@ logging:
       encoding: 'utf-8'
   root:
     level: DEBUG
-    handlers: [console, file]
+    handlers: [console]
 services:
-  turnouts:
-    - name: A
-      angles:
-        main: 45
-        diverging: 135
-      outputs:
-        - name: servo
-          type: PCA9685
-          address: 0x40
-          pin: 0
-        - name: frog
-          type: PCA9685
-          address: 0x40
-          pin: 4
-    - name: B
-      angles:
-        main: 45
-        diverging: 135
-      outputs:
-        - name: servo
-          type: PCA9685
-          address: 0x40
-          pin: 1
-        - name: frog
-          type: PCA9685
-          address: 0x40
-          pin: 5
+  turnout:
+    update-rate: 1
+    angular-speed: 5
+    turnouts:
+      - name: A
+        angles:
+          main: 45
+          diverging: 135
+        outputs:
+          - name: servo
+            type: PCA9685
+            address: 0x40
+            pin: 0
+          - name: frog
+            type: PCA9685
+            address: 0x40
+            pin: 4
+      - name: B
+        angles:
+          main: 45
+          diverging: 135
+        outputs:
+          - name: servo
+            type: PCA9685
+            address: 0x40
+            pin: 1
+          - name: frog
+            type: PCA9685
+            address: 0x40
+            pin: 5

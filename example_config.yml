@@ -23,7 +23,7 @@ logging:
     handlers: [console, file]
 services:
   turnouts:
-    - name: main
+    - name: A
       angles:
         main: 45
         diverging: 135
@@ -36,7 +36,7 @@ services:
           type: PCA9685
           address: 0x40
           pin: 4
-    - name: yard
+    - name: B
       angles:
         main: 45
         diverging: 135

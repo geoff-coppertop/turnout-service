@@ -214,11 +214,17 @@ class TurnoutService(object):
         '''
         Service receive handler
         '''
-        self.__logger.info(f'RX: {data}')
 
-        self.__turnouts[data.name].change_route(time.time())
+        turnout = data.name
 
-        self.__waiter.set()
+        self.__logger.debug(f'RX: {turnout}')
+
+        if turnout in self.__turnouts.keys():
+            self.__logger.info('Moving turnout: {turnout}')
+
+            self.__turnouts[turnout].change_route(time.time())
+
+            self.__waiter.set()
 
     def __transmit(self, data):
         '''

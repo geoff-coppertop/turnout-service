@@ -15,7 +15,7 @@ logging:
     handlers: [console]
 services:
   turnout:
-    update-rate: 0.04
+    update-rate: 0.02
     angular-speed: 20
     turnouts:
       - name: A

@@ -9,6 +9,7 @@
 #-------------------------------------------------------------------------------
 
 import logging
+import logging.config
 import os
 import signal
 import sys
@@ -142,8 +143,9 @@ class TurnoutService(object):
         '''
         try:
             logging.config.dictConfig(config)
-        except:
+        except Exception as ex:
             logging.basicConfig(level=logging.DEBUG)
+            logging.error(ex)
             logging.error('Oh shit... logging is borked')
 
     def __configure_service(self, config):

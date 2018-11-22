@@ -11,25 +11,17 @@ logging:
       level: INFO
       formatter: simple
       stream: ext://sys.stdout
-    file:
-      class: logging.FileHandler
-      level: DEBUG
-      formatter: verbose
-      filename: 'details.log'
-      mode: 'w'
-      encoding: 'utf-8'
   root:
-    level: DEBUG
     handlers: [console]
 services:
   turnout:
-    update-rate: 1
-    angular-speed: 5
+    update-rate: 0.005
+    angular-speed: 20
     turnouts:
       - name: A
         angles:
-          main: 45
-          diverging: 135
+          main: 0
+          diverging: 180
         outputs:
           - name: servo
             type: PCA9685

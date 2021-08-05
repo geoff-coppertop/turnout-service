@@ -1,6 +1,6 @@
 axel==0.0.7
 PCA9685-driver==1.2.0
-pyyaml==3.13
+pyyaml==5.4
 git+https://github.com/geoff-coppertop/python-hw-low-level.git
 git+https://github.com/geoff-coppertop/python-hw-railroad.git
 touchphat==0.0.1
